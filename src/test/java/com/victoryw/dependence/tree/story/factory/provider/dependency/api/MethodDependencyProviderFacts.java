@@ -5,6 +5,7 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.google.gson.Gson;
 import com.victoryw.dependence.tree.story.factory.Fixture;
+import com.victoryw.dependence.tree.story.factory.domain.MethodDag;
 import com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto.MethodDependencyDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
@@ -52,6 +53,27 @@ class MethodDependencyProviderFacts {
         final MethodDependencyDto methodDependencyDto = methodDepDto.get();
         Assertions.assertThat(methodDependencyDto.getMethodNodeDtos()).hasSameSizeAs(source.getMethodNodeDtos());
         Assertions.assertThat(methodDependencyDto.getMethodCallDtos()).hasSameSizeAs(source.getMethodCallDtos());
+    }
+
+
+    @Test
+    void should_fetch_method_dependency_to_model() {
+
+        final String className = "com.ebao.life.claim.infrastructure.expose.MedicardCaseTransPolicyDAO";
+        final String methodName = "batchcreate";
+
+        final String methodUrl = String.format("/method/%s/%s/callees", className, methodName);
+
+        Gson gson = new Gson();
+        final String body = gson.toJson(source);
+        wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo(methodUrl))
+                .willReturn(WireMock.aResponse().withBody(body)));
+
+        final Optional<MethodDag> methodDepDto = provider.getMethodDependencies(className, methodName);
+
+        Assertions.assertThat(methodDepDto.isPresent()).isTrue();
+        final MethodDag methodDependencyDto = methodDepDto.get();
+
     }
 
 }
