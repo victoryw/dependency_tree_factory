@@ -1,26 +1,29 @@
 package com.victoryw.dependence.tree.story.factory.provider.dependency.api;
 
 import com.victoryw.dependence.tree.story.factory.domain.MethodDag;
+import com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto.MethodCallDagFactory;
 import com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto.MethodDependencyDto;
 import okhttp3.Request;
 import org.apache.commons.lang3.StringUtils;
 import retrofit2.Call;
 import retrofit2.Response;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 public class MethodDependencyProvider {
 
-    private DependencyApiClient apiClient;
+    private final DependencyApiClient apiClient;
+    private final MethodCallDagFactory factory;
 
     public MethodDependencyProvider() {
         apiClient = DependencyApiClient.create();
+        factory = new MethodCallDagFactory();
     }
 
     public Optional<MethodDag> getMethodDependencies(String className, String methodName) {
-        getPartialMethodDependencies(className, methodName);
-        return Optional.empty();
+        return
+                getPartialMethodDependencies(className, methodName).
+                map(factory::create);
     }
 
 
