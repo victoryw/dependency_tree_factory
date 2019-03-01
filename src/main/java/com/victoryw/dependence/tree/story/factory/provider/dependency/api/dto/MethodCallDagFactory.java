@@ -1,5 +1,7 @@
-package com.victoryw.dependence.tree.story.factory.domain;
+package com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto;
 
+import com.victoryw.dependence.tree.story.factory.domain.MethodDag;
+import com.victoryw.dependence.tree.story.factory.domain.MethodVertex;
 import com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto.MethodDependencyDto;
 
 import java.util.List;

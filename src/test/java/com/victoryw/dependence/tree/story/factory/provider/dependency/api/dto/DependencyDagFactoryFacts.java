@@ -1,39 +1,42 @@
-package com.victoryw.dependence.tree.story.factory.model;
+package com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto;
 
-import com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto.MethodDependencyDto;
-import com.victoryw.dependence.tree.story.factory.domain.MethodCallDagFactory;
+import com.victoryw.dependence.tree.story.factory.Fixture;
 import com.victoryw.dependence.tree.story.factory.domain.MethodDag;
 import com.victoryw.dependence.tree.story.factory.domain.MethodVertex;
-import com.victoryw.dependence.tree.story.factory.Fixture;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 class DependencyDagFactoryFacts {
 
     private static MethodDependencyDto methodDependencyDto;
+    private MethodCallDagFactory factory;
 
     @BeforeAll
     static void setup() {
         methodDependencyDto = Fixture.example();
     }
 
+    @BeforeEach
+    void setUp() {
+        factory = new MethodCallDagFactory();
+    }
+
     @Test
     void should_generator_dag_with_input() {
-        MethodCallDagFactory factory = new MethodCallDagFactory();
         MethodDag graph = factory.create(methodDependencyDto);
         methodDependencyDto.getMethodNodeDtos().forEach(methodNode -> {
-            assertThat(methodNode).matches(node -> {
+            Assertions.assertThat(methodNode).matches(node -> {
                 MethodVertex vertex = graph.getVertexById(node.getId());
                 return Objects.equals(vertex.getTitle(), node.getTitle());
             });
         });
 
         methodDependencyDto.getMethodCallDtos().forEach(methodCall -> {
-            assertThat(methodCall).matches(call -> graph.hasEdge(call.getA(), call.getB()));
+            Assertions.assertThat(methodCall).matches(call -> graph.hasEdge(call.getA(), call.getB()));
         });
     }
 }
