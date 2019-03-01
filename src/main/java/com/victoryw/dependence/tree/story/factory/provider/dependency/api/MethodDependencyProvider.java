@@ -9,6 +9,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 class MethodDependencyProvider {
 
@@ -21,40 +22,43 @@ class MethodDependencyProvider {
     }
 
     Optional<MethodDag> getMethodDependencies(String className, String methodName) {
-        return
-                getPartialMethodDependencies(className, methodName).
-                        map(factory::create);
+        final Response<MethodDependencyDto> response = queryForResponse(className, methodName);
+        validResponse(response);
+        return transformResponse(response);
     }
 
+    private Optional<MethodDag> transformResponse(Response<MethodDependencyDto> response) {
+        return Optional
+                .ofNullable(response.body())
+                .map(factory::create);
+    }
 
-    Optional<MethodDependencyDto> getPartialMethodDependencies(String className, String methodName) {
-        final Call<MethodDependencyDto> apiCall = apiClient.getMethodDependencies(className, methodName);
-        final Response<MethodDependencyDto> response =
-                Try.of(apiCall::execute).
-                        getOrElseThrow(ex ->
-                                {
-                                    final Request request = apiCall.request();
-                                    return new MethodDependencyFetchException(
-                                            request.url().toString(),
-                                            request.method(),
-                                            ex
-                                    );
-                                }
-                        );
-
+    private void validResponse(Response<MethodDependencyDto> response) {
         if (!response.isSuccessful()) {
             final Request request = response.raw().request();
-            throw new MethodDependencyFetchException(request.url()
-                    .toString(), request.method(),
+            throw new MethodDependencyFetchException(request.method(), request.url()
+                    .toString(),
                     response.code(), response.message());
         }
-
-        if (response.body() == null) {
-            return Optional.empty();
-        }
-
-        return Optional.of(response.body());
     }
+
+    private Response<MethodDependencyDto> queryForResponse(String className, String methodName) {
+        final Call<MethodDependencyDto> apiCall =
+                apiClient.getMethodDependencies(className, methodName);
+
+        final Function<Throwable, MethodDependencyFetchException> createException = ex ->
+        {
+            final Request request = apiCall.request();
+            return new MethodDependencyFetchException(
+                    request.url().toString(),
+                    request.method(),
+                    ex
+            );
+        };
+
+        return Try.of(apiCall::execute).getOrElseThrow(createException);
+    }
+
 
 }
 

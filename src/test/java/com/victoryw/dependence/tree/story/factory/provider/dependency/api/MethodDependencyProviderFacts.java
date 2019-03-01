@@ -40,26 +40,6 @@ class MethodDependencyProviderFacts {
         wireMockServer.stop();
     }
 
-    @Test
-    void should_fetch_method_dependency() {
-
-        final String className = "com.ebao.life.claim.infrastructure.expose.MedicardCaseTransPolicyDAO";
-        final String methodName = "batchcreate";
-
-        final String methodUrl = String.format("/method/%s/%s/callees", className, methodName);
-
-        wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo(methodUrl))
-                .willReturn(WireMock.aResponse().withBody(methodReturnJsonBody)));
-
-        final Optional<MethodDependencyDto> methodDepDto = provider.
-                getPartialMethodDependencies(className, methodName);
-
-        Assertions.assertThat(methodDepDto).isPresent();
-        final MethodDependencyDto methodDependencyDto = methodDepDto.get();
-        Assertions.assertThat(methodDependencyDto.getMethodNodeDtos()).hasSameSizeAs(source.getMethodNodeDtos());
-        Assertions.assertThat(methodDependencyDto.getMethodCallDtos()).hasSameSizeAs(source.getMethodCallDtos());
-    }
-
 
     @Test
     void should_fetch_method_dependency_to_model() {

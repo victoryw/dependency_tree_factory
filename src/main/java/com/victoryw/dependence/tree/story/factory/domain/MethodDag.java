@@ -6,17 +6,17 @@ import java.util.List;
 
 public class MethodDag  {
 
-    private SimpleDirectedGraph<MethodVertex, MethodCallDirectEdge> graph;
+    private SimpleDirectedGraph<MethodVertex, MethodCallDirectedEdge> graph;
 
     public MethodDag(List<MethodVertex> vertexes) {
-        graph = new SimpleDirectedGraph<>(MethodCallDirectEdge.class);
+        graph = new SimpleDirectedGraph<>(MethodCallDirectedEdge.class);
         vertexes.forEach(methodVertex -> graph.addVertex(methodVertex));
     }
 
     public void addEdge(String fromId, String toId) {
         MethodVertex fromVertex = getVertexById(fromId);
         MethodVertex toVertex = getVertexById(toId);
-        MethodCallDirectEdge edge = new MethodCallDirectEdge(fromVertex, toVertex);
+        MethodCallDirectedEdge edge = new MethodCallDirectedEdge(fromVertex, toVertex);
         graph.addEdge(fromVertex, toVertex, edge);
     }
 
