@@ -31,6 +31,7 @@ dependencies {
     implementation("org.apache.commons:commons-lang3:3.8.1")
     implementation("com.squareup.retrofit2:retrofit:2.5.0")
     implementation("com.squareup.retrofit2:converter-gson:2.5.0")
+    implementation("io.vavr:vavr:0.9.3")
 
     implementation("commons-collections:commons-collections:3.2.2");
     // Use JUnit test framework

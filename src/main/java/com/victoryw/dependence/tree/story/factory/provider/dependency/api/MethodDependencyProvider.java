@@ -3,56 +3,58 @@ package com.victoryw.dependence.tree.story.factory.provider.dependency.api;
 import com.victoryw.dependence.tree.story.factory.domain.MethodDag;
 import com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto.MethodCallDagFactory;
 import com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto.MethodDependencyDto;
+import io.vavr.control.Try;
 import okhttp3.Request;
-import org.apache.commons.lang3.StringUtils;
 import retrofit2.Call;
 import retrofit2.Response;
 
 import java.util.Optional;
 
-public class MethodDependencyProvider {
+class MethodDependencyProvider {
 
     private final DependencyApiClient apiClient;
     private final MethodCallDagFactory factory;
 
-    public MethodDependencyProvider() {
+    MethodDependencyProvider() {
         apiClient = DependencyApiClient.create();
         factory = new MethodCallDagFactory();
     }
 
-    public Optional<MethodDag> getMethodDependencies(String className, String methodName) {
+    Optional<MethodDag> getMethodDependencies(String className, String methodName) {
         return
                 getPartialMethodDependencies(className, methodName).
-                map(factory::create);
+                        map(factory::create);
     }
 
 
     Optional<MethodDependencyDto> getPartialMethodDependencies(String className, String methodName) {
         final Call<MethodDependencyDto> apiCall = apiClient.getMethodDependencies(className, methodName);
-        try {
-            final Response<MethodDependencyDto> response = apiCall.execute();
-            if ( ! response.isSuccessful()) {
-                throw createException(response);
-            }
+        final Response<MethodDependencyDto> response =
+                Try.of(apiCall::execute).
+                        getOrElseThrow(ex ->
+                                {
+                                    final Request request = apiCall.request();
+                                    return new MethodDependencyFetchException(
+                                            request.url().toString(),
+                                            request.method(),
+                                            ex
+                                    );
+                                }
+                        );
 
-            if(response.body() == null) {
-                return Optional.empty();
-            }
-
-            return Optional.of(response.body());
-        } catch (Exception e) {
-            throw new MethodDependencyFetchException("fail to fetch method dependencies",e);
+        if (!response.isSuccessful()) {
+            final Request request = response.raw().request();
+            throw new MethodDependencyFetchException(request.url()
+                    .toString(), request.method(),
+                    response.code(), response.message());
         }
+
+        if (response.body() == null) {
+            return Optional.empty();
+        }
+
+        return Optional.of(response.body());
     }
 
-    private MethodDependencyFetchException createException(Response<MethodDependencyDto> response) {
-        final Request request = response.raw().request();
-        return new MethodDependencyFetchException(StringUtils.join(
-                "fail to fetch method dependencies,",
-                " url is ", request.url(),
-                " method is ", request.method(),
-                " error code is ", response.code(),
-                " message is ", response.message()));
-    }
 }
 
