@@ -1,4 +1,4 @@
-package com.victoryw.dependence.tree.story.factory.dependence.service.dto;
+package com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MethodDagDto implements Serializable
+public class MethodDependencyDto implements Serializable
 {
 
     @SerializedName("nodes")
@@ -27,7 +27,7 @@ public class MethodDagDto implements Serializable
         this.methodNodeDtos = methodNodeDtos;
     }
 
-    public MethodDagDto withNodes(List<MethodNodeDto> methodNodeDtos) {
+    public MethodDependencyDto withNodes(List<MethodNodeDto> methodNodeDtos) {
         this.methodNodeDtos = methodNodeDtos;
         return this;
     }
@@ -40,7 +40,7 @@ public class MethodDagDto implements Serializable
         this.methodCallDtos = methodCallDtos;
     }
 
-    public MethodDagDto withEdges(List<MethodCallDto> methodCallDtos) {
+    public MethodDependencyDto withEdges(List<MethodCallDto> methodCallDtos) {
         this.methodCallDtos = methodCallDtos;
         return this;
     }

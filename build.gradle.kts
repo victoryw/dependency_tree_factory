@@ -29,10 +29,15 @@ dependencies {
     implementation(platform("com.fasterxml.jackson:jackson-bom:2.9.0"))
     implementation("com.google.code.gson:gson:2.8.5")
     implementation("org.apache.commons:commons-lang3:3.8.1")
+    implementation("com.squareup.retrofit2:retrofit:2.5.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.5.0")
+
+    implementation("commons-collections:commons-collections:3.2.2");
     // Use JUnit test framework
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.1.0")
     testCompile("org.assertj:assertj-core:3.11.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.1.0")
+    testImplementation("com.github.tomakehurst:wiremock-jre8:2.21.0")
 }
 
 tasks.named<Test>("test") {

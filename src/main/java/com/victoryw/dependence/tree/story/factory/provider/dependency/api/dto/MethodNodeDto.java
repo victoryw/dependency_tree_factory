@@ -1,4 +1,4 @@
-package com.victoryw.dependence.tree.story.factory.dependence.service.dto;
+package com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
