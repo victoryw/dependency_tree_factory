@@ -17,14 +17,14 @@ import java.util.Optional;
 
 class MethodDependencyProviderFacts {
 
-    private MethodDependencyProvider provider;
+    private MethodDependencyProviderImplement provider;
     private WireMockServer wireMockServer;
     private static MethodDependencyDto source;
     private String methodReturnJsonBody;
 
     @BeforeEach
     void setUp() {
-        provider = new MethodDependencyProvider();
+        provider = new MethodDependencyProviderImplement();
         wireMockServer = new WireMockServer(WireMockConfiguration.options().port(8900));
         wireMockServer.start();
 

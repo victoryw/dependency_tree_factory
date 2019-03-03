@@ -1,5 +1,6 @@
 package com.victoryw.dependence.tree.story.factory.neo4j;
 
+import com.victoryw.dependence.tree.story.factory.domain.DependencyRepository;
 import com.victoryw.dependence.tree.story.factory.domain.MethodDag;
 import com.victoryw.dependence.tree.story.factory.domain.MethodVertex;
 import org.neo4j.driver.v1.Driver;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 
 import static org.neo4j.driver.v1.Values.parameters;
 
-public class DependencyNeo4jRepository {
+public class DependencyNeo4jRepository implements DependencyRepository {
 
     private Driver driver;
     private static String nodeIdPropertyName = "id";
@@ -28,6 +29,7 @@ public class DependencyNeo4jRepository {
         driver = DriverProvider.createDriver();
     }
 
+    @Override
     public void save(MethodDag justNewDag) {
         String methodLabel = ":Method";
         final String statementTemplate = "CREATE (" + methodLabel + " {" + nodeIdPropertyName + ": $id, " + nodeTitlePropertyName + ":$title})";
@@ -51,6 +53,7 @@ public class DependencyNeo4jRepository {
 
     }
 
+    @Override
     public Optional<MethodDag> load(MethodVertex nodeId) {
         String loadAllNodeQuery = "MATCH (root:Method {id: $nodeId})-[r*]->(child:Method) " +
                 "UNWIND r as flat " +
@@ -83,6 +86,7 @@ public class DependencyNeo4jRepository {
 
     }
 
+    @Override
     public List<MethodVertex> fetchLeafNodes(MethodVertex origin) {
         String fetchLeafNodesStr = "match (n)<-[r*]-(top:Method {id:$originId}) " +
                 "where NOT (n)-->() " +

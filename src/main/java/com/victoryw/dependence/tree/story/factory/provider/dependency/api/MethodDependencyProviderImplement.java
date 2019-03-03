@@ -1,7 +1,7 @@
 package com.victoryw.dependence.tree.story.factory.provider.dependency.api;
 
-import com.sun.xml.internal.ws.util.CompletedFuture;
 import com.victoryw.dependence.tree.story.factory.domain.MethodDag;
+import com.victoryw.dependence.tree.story.factory.domain.MethodDependencyProvider;
 import com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto.MethodCallDagFactory;
 import com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto.MethodDependencyDto;
 import io.vavr.control.Try;
@@ -10,20 +10,20 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
-class MethodDependencyProvider {
+class MethodDependencyProviderImplement implements MethodDependencyProvider {
 
     private final DependencyApiClient apiClient;
     private final MethodCallDagFactory factory;
 
-    MethodDependencyProvider() {
+    MethodDependencyProviderImplement() {
         apiClient = DependencyApiClient.create();
         factory = new MethodCallDagFactory();
     }
 
-    Optional<MethodDag> getMethodDependencies(String className, String methodName) {
+    @Override
+    public Optional<MethodDag> getMethodDependencies(String className, String methodName) {
         final Response<MethodDependencyDto> response = queryForResponse(className, methodName);
         validResponse(response);
         return transformResponse(response);
