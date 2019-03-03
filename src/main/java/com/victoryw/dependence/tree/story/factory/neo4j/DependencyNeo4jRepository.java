@@ -10,7 +10,9 @@ import org.neo4j.driver.v1.Value;
 import org.neo4j.driver.v1.types.Node;
 import org.neo4j.driver.v1.types.Relationship;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.neo4j.driver.v1.Values.parameters;
 
@@ -79,6 +81,20 @@ public class DependencyNeo4jRepository {
 
         return Optional.of(dag);
 
+    }
+
+    public List<MethodVertex> fetchLeafNodes(MethodVertex origin) {
+        String fetchLeafNodesStr = "match (n)<-[r*]-(top:Method {id:$originId}) " +
+                "where NOT (n)-->() " +
+                "return distinct n;";
+
+        try (Session session = driver.session()) {
+            final StatementResult result = session.run(fetchLeafNodesStr,
+                    parameters("originId", origin.getNodeId()));
+            return result.stream()
+                    .map((record) -> convertToVertex(record, "n"))
+                    .collect(Collectors.toList());
+        }
     }
 
     private MethodVertex convertToVertex(Record record, String key) {

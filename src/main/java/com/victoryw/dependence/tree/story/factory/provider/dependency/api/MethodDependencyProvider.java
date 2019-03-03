@@ -1,5 +1,6 @@
 package com.victoryw.dependence.tree.story.factory.provider.dependency.api;
 
+import com.sun.xml.internal.ws.util.CompletedFuture;
 import com.victoryw.dependence.tree.story.factory.domain.MethodDag;
 import com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto.MethodCallDagFactory;
 import com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto.MethodDependencyDto;
@@ -9,6 +10,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 class MethodDependencyProvider {
@@ -45,7 +47,6 @@ class MethodDependencyProvider {
     private Response<MethodDependencyDto> queryForResponse(String className, String methodName) {
         final Call<MethodDependencyDto> apiCall =
                 apiClient.getMethodDependencies(className, methodName);
-
         final Function<Throwable, MethodDependencyFetchException> createException = ex ->
         {
             final Request request = apiCall.request();
