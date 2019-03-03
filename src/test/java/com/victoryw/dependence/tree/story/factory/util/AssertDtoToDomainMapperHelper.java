@@ -9,7 +9,7 @@ import org.assertj.core.api.Assertions;
 import java.util.List;
 import java.util.Objects;
 
-public class AssertGraphHelper {
+public class AssertDtoToDomainMapperHelper {
     public static void assertGraphNodeTheSameAsSource(MethodDag graph, List<MethodNodeDto> methodNodeDtos) {
         methodNodeDtos.forEach(methodNode -> {
             Assertions.assertThat(methodNode).matches(node -> {

@@ -1,4 +1,4 @@
-package com.victoryw.dependence.tree.story.factory;
+package com.victoryw.dependence.tree.story.factory.fixtures;
 
 import com.sun.tools.javac.util.List;
 import com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto.MethodCallDto;
@@ -7,8 +7,8 @@ import com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto.Me
 
 import java.util.UUID;
 
-public class Fixture {
-    public static MethodDependencyDto example() {
+public class MethodDependencyDtoFixture {
+    public static MethodDependencyDto sample() {
         final MethodNodeDto node1 = MethodNodeDto.createMethodNode(UUID.randomUUID().toString());
         final MethodNodeDto node11 = MethodNodeDto.createMethodNode(UUID.randomUUID().toString());
         final MethodNodeDto node12 = MethodNodeDto.createMethodNode(UUID.randomUUID().toString());

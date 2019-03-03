@@ -1,8 +1,8 @@
 package com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto;
 
-import com.victoryw.dependence.tree.story.factory.Fixture;
+import com.victoryw.dependence.tree.story.factory.fixtures.MethodDependencyDtoFixture;
 import com.victoryw.dependence.tree.story.factory.domain.MethodDag;
-import com.victoryw.dependence.tree.story.factory.util.AssertGraphHelper;
+import com.victoryw.dependence.tree.story.factory.util.AssertDtoToDomainMapperHelper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ public class DependencyDagFactoryFacts {
 
     @BeforeAll
     static void setup() {
-        methodDependencyDto = Fixture.example();
+        methodDependencyDto = MethodDependencyDtoFixture.sample();
     }
 
     @BeforeEach
@@ -25,8 +25,8 @@ public class DependencyDagFactoryFacts {
     @Test
     void should_generator_dag_with_input() {
         MethodDag graph = factory.create(methodDependencyDto);
-        AssertGraphHelper.assertGraphNodeTheSameAsSource(graph, methodDependencyDto.getMethodNodeDtos());
-        AssertGraphHelper.assertGraphEdgeTheSameAsSource(graph, methodDependencyDto.getMethodCallDtos());
+        AssertDtoToDomainMapperHelper.assertGraphNodeTheSameAsSource(graph, methodDependencyDto.getMethodNodeDtos());
+        AssertDtoToDomainMapperHelper.assertGraphEdgeTheSameAsSource(graph, methodDependencyDto.getMethodCallDtos());
     }
 
 }

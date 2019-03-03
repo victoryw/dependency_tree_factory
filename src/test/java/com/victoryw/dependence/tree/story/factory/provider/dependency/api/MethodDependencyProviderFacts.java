@@ -4,12 +4,11 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.google.gson.Gson;
-import com.victoryw.dependence.tree.story.factory.Fixture;
+import com.victoryw.dependence.tree.story.factory.fixtures.MethodDependencyDtoFixture;
 import com.victoryw.dependence.tree.story.factory.domain.MethodDag;
 import com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto.MethodDependencyDto;
-import com.victoryw.dependence.tree.story.factory.util.AssertGraphHelper;
+import com.victoryw.dependence.tree.story.factory.util.AssertDtoToDomainMapperHelper;
 import org.assertj.core.api.Assertions;
-import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,7 @@ class MethodDependencyProviderFacts {
         wireMockServer = new WireMockServer(WireMockConfiguration.options().port(8900));
         wireMockServer.start();
 
-        source = Fixture.example();
+        source = MethodDependencyDtoFixture.sample();
 
         Gson gson = new Gson();
         methodReturnJsonBody = gson.toJson(source);
@@ -56,8 +55,8 @@ class MethodDependencyProviderFacts {
 
         Assertions.assertThat(methodDepsResult).isPresent();
         final MethodDag methodDepsDag = methodDepsResult.get();
-        AssertGraphHelper.assertGraphNodeTheSameAsSource(methodDepsDag, source.getMethodNodeDtos());
-        AssertGraphHelper.assertGraphEdgeTheSameAsSource(methodDepsDag, source.getMethodCallDtos());
+        AssertDtoToDomainMapperHelper.assertGraphNodeTheSameAsSource(methodDepsDag, source.getMethodNodeDtos());
+        AssertDtoToDomainMapperHelper.assertGraphEdgeTheSameAsSource(methodDepsDag, source.getMethodCallDtos());
     }
 
 }
