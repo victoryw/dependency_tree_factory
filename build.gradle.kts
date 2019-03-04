@@ -33,7 +33,10 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.5.0")
     implementation("io.vavr:vavr:0.9.3")
     implementation("org.neo4j.driver:neo4j-java-driver:1.7.2")
-    implementation("org.antlr:ST4:4.1")
+
+    implementation("com.scalified:tree:0.2.5")
+
+
 
 //    implementation("org.neo4j:neo4j:3.2.14")
 

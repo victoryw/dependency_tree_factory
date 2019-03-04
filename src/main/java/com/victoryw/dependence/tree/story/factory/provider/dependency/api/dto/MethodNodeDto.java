@@ -28,6 +28,12 @@ public class MethodNodeDto implements Serializable
         return node1;
     }
 
+    public static MethodNodeDto createMethodNode(String nodeId, String title) {
+        return new MethodNodeDto().
+                withId(nodeId).
+                withTitle(title);
+    }
+
     public String getId() {
         return id;
     }

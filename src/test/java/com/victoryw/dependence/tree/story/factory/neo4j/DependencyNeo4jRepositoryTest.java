@@ -15,12 +15,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class DependencyNeo4jRepositoryTest {
 
-    private DependencyNeo4jRepository respository;
+    private DependencyNeo4jRepository repository;
 
     @BeforeEach
     void setUp() {
         cleanDatabase();
-        respository = new DependencyNeo4jRepository();
+        repository = new DependencyNeo4jRepository();
     }
 
     private void cleanDatabase() {
@@ -34,9 +34,9 @@ class DependencyNeo4jRepositoryTest {
     @Test
     void should_create_dependencies_dap() {
         MethodDag dag = SimpleMethodDagFixture.sample();
-        respository.save(dag);
+        repository.save(dag);
 
-        Optional<MethodDag> reloadDag = respository.load(dag.getOriginId());
+        Optional<MethodDag> reloadDag = repository.load(dag.getOrigin());
         assertThat(reloadDag).isPresent();
 
         assertThat(dag).isEqualTo(reloadDag.get());
@@ -46,9 +46,9 @@ class DependencyNeo4jRepositoryTest {
     @Test
     void should_fetch_leaf_node() {
         MethodDag dag = SimpleMethodDagFixture.sample();
-        respository.save(dag);
+        repository.save(dag);
 
-        final List<MethodVertex> methodVertices = respository.fetchLeafNodes(dag.getOriginId());
+        final List<MethodVertex> methodVertices = repository.fetchLeafNodes(dag.getOrigin().getNodeId());
 
         assertThat(methodVertices).containsExactlyInAnyOrderElementsOf(SimpleMethodDagFixture.getLeafNodes());
     }

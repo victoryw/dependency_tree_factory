@@ -28,7 +28,7 @@ class MethodDependencyProviderFacts {
         wireMockServer = new WireMockServer(WireMockConfiguration.options().port(8900));
         wireMockServer.start();
 
-        source = MethodDependencyDtoFixture.sample();
+        source = MethodDependencyDtoFixture.root();
 
         Gson gson = new Gson();
         methodReturnJsonBody = gson.toJson(source);

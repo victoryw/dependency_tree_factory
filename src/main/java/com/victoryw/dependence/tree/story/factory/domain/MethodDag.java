@@ -47,7 +47,7 @@ public class MethodDag  {
         this.originId = originId;
     }
 
-    public MethodVertex getOriginId() {
+    public MethodVertex getOrigin() {
         return getVertexById(this.originId);
     }
 
@@ -65,9 +65,10 @@ public class MethodDag  {
         }
     }
 
-    public boolean hasVertex() {
+    public boolean isEmpty() {
         return !graph.vertexSet().isEmpty();
     }
+
 
     @Override
     public int hashCode() {

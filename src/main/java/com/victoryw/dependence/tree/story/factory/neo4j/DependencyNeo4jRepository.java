@@ -64,6 +64,7 @@ public class DependencyNeo4jRepository implements DependencyRepository {
         try (Session session = driver.session()) {
             final StatementResult result = session.run(loadAllNodeQuery,
                     parameters("nodeId", nodeId.getNodeId()));
+
             result.stream().forEach(record -> {
                 final MethodVertex from = convertToVertex(record, "from");
                 final MethodVertex to = convertToVertex(record, "to");
@@ -78,7 +79,7 @@ public class DependencyNeo4jRepository implements DependencyRepository {
             });
         }
 
-        if (!dag.hasVertex()) {
+        if (!dag.isEmpty()) {
             return Optional.empty();
         }
 
@@ -87,17 +88,32 @@ public class DependencyNeo4jRepository implements DependencyRepository {
     }
 
     @Override
-    public List<MethodVertex> fetchLeafNodes(MethodVertex origin) {
+    public List<MethodVertex> fetchLeafNodes(String originId) {
         String fetchLeafNodesStr = "match (n)<-[r*]-(top:Method {id:$originId}) " +
                 "where NOT (n)-->() " +
                 "return distinct n;";
 
         try (Session session = driver.session()) {
             final StatementResult result = session.run(fetchLeafNodesStr,
-                    parameters("originId", origin.getNodeId()));
+                    parameters("originId", originId));
             return result.stream()
                     .map((record) -> convertToVertex(record, "n"))
                     .collect(Collectors.toList());
+        }
+    }
+
+    @Override
+    public Optional<MethodVertex> loadVertexByTitle(String title) {
+        String queryCommand = "MATCH (root:Method {title: $title}) RETURN root";
+
+        try (Session session = driver.session()) {
+            final StatementResult vertexResult = session.run(queryCommand,
+                    parameters("title", title));
+            if (! vertexResult.hasNext()) {
+                return Optional.empty();
+            }
+            final Record single = vertexResult.single();
+            return Optional.of(convertToVertex(single, "root"));
         }
     }
 

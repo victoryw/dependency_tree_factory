@@ -1,5 +1,6 @@
 package com.victoryw.dependence.tree.story.factory.provider.dependency.api;
 
+import com.victoryw.dependence.tree.story.factory.domain.MethodCallTreeNode;
 import com.victoryw.dependence.tree.story.factory.domain.MethodDag;
 import com.victoryw.dependence.tree.story.factory.domain.MethodDependencyProvider;
 import com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto.MethodCallDagFactory;
@@ -12,14 +13,23 @@ import retrofit2.Response;
 import java.util.Optional;
 import java.util.function.Function;
 
-class MethodDependencyProviderImplement implements MethodDependencyProvider {
+public class MethodDependencyProviderImplement implements MethodDependencyProvider {
 
     private final DependencyApiClient apiClient;
     private final MethodCallDagFactory factory;
 
-    MethodDependencyProviderImplement() {
+    public MethodDependencyProviderImplement() {
         apiClient = DependencyApiClient.create();
         factory = new MethodCallDagFactory();
+    }
+
+    @Override
+    public Optional<MethodCallTreeNode> getMethodDependencies2(String className, String methodName) {
+        final Response<MethodDependencyDto> response = queryForResponse(className, methodName);
+        validResponse(response);
+        return Optional
+                .ofNullable(response.body())
+                .map(factory::create2);
     }
 
     @Override

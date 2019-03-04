@@ -1,25 +1,26 @@
 package com.victoryw.dependence.tree.story.factory.fixtures;
 
-import com.sun.tools.javac.util.List;
 import com.victoryw.dependence.tree.story.factory.domain.MethodDag;
 import com.victoryw.dependence.tree.story.factory.domain.MethodVertex;
 
-import java.util.UUID;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class SimpleMethodDagFixture {
 
-    private static MethodVertex top = new MethodVertex("top".toString(), "top");
-    private static MethodVertex vertex1 = new MethodVertex("1".toString(), "1");
-    private static MethodVertex vertex2 = new MethodVertex("2".toString(), "2");
-    private static MethodVertex vertex3 = new MethodVertex("3".toString(), "3");
-    private static MethodVertex vertex11 = new MethodVertex("11".toString(), "11");
+    private static MethodVertex top = new MethodVertex("top", "top");
+    private static MethodVertex vertex1 = new MethodVertex("1", "1");
+    private static MethodVertex vertex2 = new MethodVertex("2", "2");
+    private static MethodVertex vertex3 = new MethodVertex("3", "3");
+    private static MethodVertex vertex11 = new MethodVertex("11", "11");
 
     public static List<MethodVertex> getLeafNodes() {
-        return List.of(vertex3);
+        return Collections.singletonList(vertex3);
     }
 
     public static MethodDag sample() {
-        final List<MethodVertex> list = List.of(top, vertex1, vertex2, vertex3, vertex11);
+        final List<MethodVertex> list = Arrays.asList(top, vertex1, vertex2, vertex3, vertex11);
         final MethodDag methodDag = new MethodDag(list, top);
         methodDag.addEdge(top.getNodeId(), vertex1.getNodeId());
         methodDag.addEdge(top.getNodeId(), vertex2.getNodeId());
