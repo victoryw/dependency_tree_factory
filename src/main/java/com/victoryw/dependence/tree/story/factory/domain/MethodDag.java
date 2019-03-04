@@ -6,7 +6,7 @@ import org.jgrapht.graph.SimpleDirectedGraph;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-
+@Deprecated
 public class MethodDag  {
 
     private SimpleDirectedGraph<MethodVertex, MethodCallDirectedEdge> graph;

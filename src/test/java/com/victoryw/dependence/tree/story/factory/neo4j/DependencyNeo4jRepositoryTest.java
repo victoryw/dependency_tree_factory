@@ -32,6 +32,7 @@ class DependencyNeo4jRepositoryTest {
     }
 
     @Test
+    @Deprecated
     void should_create_dependencies_dap() {
         MethodDag dag = SimpleMethodDagFixture.sample();
         repository.save(dag);
@@ -44,6 +45,7 @@ class DependencyNeo4jRepositoryTest {
 
 
     @Test
+    @Deprecated
     void should_fetch_leaf_node() {
         MethodDag dag = SimpleMethodDagFixture.sample();
         repository.save(dag);

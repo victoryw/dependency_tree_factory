@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 import static org.neo4j.driver.v1.Values.parameters;
 
+@Deprecated
 public class DependencyNeo4jRepository implements DependencyRepository {
 
     private Driver driver;

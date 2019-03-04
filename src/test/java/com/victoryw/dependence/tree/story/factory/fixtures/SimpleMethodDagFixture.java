@@ -6,7 +6,7 @@ import com.victoryw.dependence.tree.story.factory.domain.MethodVertex;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
+@Deprecated
 public class SimpleMethodDagFixture {
 
     private static MethodVertex top = new MethodVertex("top", "top");
