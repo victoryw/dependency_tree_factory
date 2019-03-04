@@ -9,6 +9,7 @@ import com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto.Me
 import com.victoryw.dependence.tree.story.factory.util.GsonExtension;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -47,7 +48,7 @@ public class MethodDependencyCreateServiceFacts {
     @Test
     void should_create_full_dependency_dap() {
         stubForDepApi();
-
+//        http://10.127.151.14:8300/method/com.ebao.life.esb.listener.ecommerce.NewbizApproValidator/validatePolicyUpdate/callees
         final String className = "className";
         final String methodName = "methodName";
         final Optional<MethodCallTreeNode> result = createService.execute(className, methodName);
@@ -62,6 +63,14 @@ public class MethodDependencyCreateServiceFacts {
         int rootNums = 1;
         int treeNodeNumber = subTreeCount + rootNums;
         assertThat(root.postOrdered()).hasSize(treeNodeNumber);
+    }
+
+    @Test
+    @Disabled
+    void should_actual_test() {
+        final String className = "com.ebao.life.esb.listener.ecommerce.ECommerceImpl";
+        final String methodName = "newbizAppro";
+        final Optional<MethodCallTreeNode> result = createService.execute(className, methodName);
     }
 
     private void stubForDepApi() {

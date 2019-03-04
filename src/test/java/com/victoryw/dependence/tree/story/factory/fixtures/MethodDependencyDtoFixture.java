@@ -24,8 +24,6 @@ public class MethodDependencyDtoFixture {
     private static MethodNodeDto node1111 = MethodNodeDto.createMethodNode(UUID.randomUUID().toString(), "className1111.methodName1111");
     private static MethodCallDto edge1111 = new MethodCallDto(node111.getId(), node1111.getId());
 
-
-
     public static MethodDependencyDto root() {
         return new MethodDependencyDto().
                 withNodes(Arrays.asList(node1, node11, node12, node111, node112)).
@@ -33,7 +31,7 @@ public class MethodDependencyDtoFixture {
     }
 
     public static MethodDependencyDto deps112() {
-        return new MethodDependencyDto().withNodes(Collections.singletonList(node112));
+        return new MethodDependencyDto();
     }
 
     public static MethodDependencyDto deps111() {

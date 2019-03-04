@@ -26,6 +26,10 @@ public class MethodDependencyProviderImplement implements MethodDependencyProvid
     public Optional<MethodCallTreeNode> getMethodDependencies(String className, String methodName) {
         final Response<MethodDependencyDto> response = queryForResponse(className, methodName);
         validResponse(response);
+        return transform(response);
+    }
+
+    private Optional<MethodCallTreeNode> transform(Response<MethodDependencyDto> response) {
         return Optional
                 .ofNullable(response.body())
                 .map(factory::create);

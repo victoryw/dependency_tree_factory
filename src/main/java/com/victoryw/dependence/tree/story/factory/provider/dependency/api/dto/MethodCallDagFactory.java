@@ -1,26 +1,28 @@
 package com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto;
 
-import com.scalified.tree.TreeNode;
 import com.victoryw.dependence.tree.story.factory.domain.MethodCallDirectedEdge;
 import com.victoryw.dependence.tree.story.factory.domain.MethodCallTreeNode;
-import com.victoryw.dependence.tree.story.factory.domain.MethodDag;
 import com.victoryw.dependence.tree.story.factory.domain.MethodVertex;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class MethodCallDagFactory {
     public MethodCallTreeNode create(MethodDependencyDto methodDependencyDto) {
+        if (methodDependencyDto.getMethodNodeDtos().isEmpty()
+                && methodDependencyDto.getMethodCallDtos().isEmpty()) {
+            return null;
+        }
+
         List<MethodVertex> vertexes = methodDependencyDto.getMethodNodeDtos()
                 .stream()
                 .map((dto) -> new MethodVertex(dto.getId(), dto.getTitle()))
                 .collect(Collectors.toList());
+
         Set<MethodCallDirectedEdge> directedEdgeSet = methodDependencyDto.
                 getMethodCallDtos().
                 stream().
@@ -46,16 +48,15 @@ public class MethodCallDagFactory {
         });
 
         root.subtrees().forEach(subTree -> {
-            final MethodCallTreeNode subTree1 = (MethodCallTreeNode)subTree;
+            final MethodCallTreeNode subTree1 = (MethodCallTreeNode) subTree;
             fillRoot(subTree1, directedEdgeSet);
         });
     }
 
     private MethodCallTreeNode createRoot(List<MethodVertex> vertexes, Set<MethodCallDirectedEdge> directedEdgeSet) {
         final MethodVertex rootMethod = vertexes.stream().filter(methodVertex ->
-                    directedEdgeSet.
-                            stream().
-                            noneMatch(edge -> Objects.equals(edge.getToVertex(), methodVertex))).
+                directedEdgeSet.stream().noneMatch(edge ->
+                        Objects.equals(edge.getToVertex(), methodVertex))).
                 findFirst().
                 orElseThrow(() -> new MethodCallRootNotFoundException(vertexes, directedEdgeSet));
         return new MethodCallTreeNode(rootMethod);
@@ -67,7 +68,7 @@ public class MethodCallDagFactory {
         final Optional<MethodVertex> from = getNode(vertexes, fromId);
         final Optional<MethodVertex> to = getNode(vertexes, toId);
         if (!from.isPresent() || !to.isPresent()) {
-            throw new MethodDependencyFetchNotExistsMehtodCallException(dto, from.isPresent(), to .isPresent());
+            throw new MethodDependencyFetchNotExistsMehtodCallException(dto, from.isPresent(), to.isPresent());
         }
 
         return new MethodCallDirectedEdge(from.get(), to.get());
