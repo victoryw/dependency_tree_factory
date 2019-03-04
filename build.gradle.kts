@@ -29,6 +29,7 @@ dependencies {
     implementation(platform("com.fasterxml.jackson:jackson-bom:2.9.0"))
     implementation("com.google.code.gson:gson:2.8.5")
     implementation("org.apache.commons:commons-lang3:3.8.1")
+    implementation("ch.qos.logback:logback-classic:1.0.13")
     implementation("com.squareup.retrofit2:retrofit:2.5.0")
     implementation("com.squareup.retrofit2:converter-gson:2.5.0")
     implementation("io.vavr:vavr:0.9.3")
