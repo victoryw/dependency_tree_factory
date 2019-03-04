@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class MethodCallDagFactory {
+public class MethodCallTreeNodeFactory {
     public MethodCallTreeNode create(MethodDependencyDto methodDependencyDto) {
         if (methodDependencyDto.getMethodNodeDtos().isEmpty()
                 && methodDependencyDto.getMethodCallDtos().isEmpty()) {
@@ -37,15 +37,9 @@ public class MethodCallDagFactory {
     }
 
     private void fillRoot(MethodCallTreeNode root, Set<MethodCallDirectedEdge> directedEdgeSet) {
-        final List<ImmutablePair<MethodCallTreeNode, MethodCallDirectedEdge>> subNodes = directedEdgeSet.stream().
-                filter(edge -> edge.getFromVertex().equals(root.data())).
-                map(subEdge -> {
-                    final MethodCallTreeNode node = new MethodCallTreeNode(subEdge.getToVertex());
-                    return new ImmutablePair<>(node, subEdge);
-                }).collect(Collectors.toList());
-        subNodes.forEach(node -> {
-            root.attachEdge(node.getRight(), node.getLeft());
-        });
+        final List<MethodCallDirectedEdge> edges = directedEdgeSet.stream().
+                filter(edge -> edge.getFromVertex().equals(root.data())).collect(Collectors.toList());
+        edges.forEach(root::attachEdge);
 
         root.subtrees().forEach(subTree -> {
             final MethodCallTreeNode subTree1 = (MethodCallTreeNode) subTree;

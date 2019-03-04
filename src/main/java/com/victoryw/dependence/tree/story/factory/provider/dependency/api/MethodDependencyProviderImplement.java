@@ -2,7 +2,7 @@ package com.victoryw.dependence.tree.story.factory.provider.dependency.api;
 
 import com.victoryw.dependence.tree.story.factory.domain.MethodCallTreeNode;
 import com.victoryw.dependence.tree.story.factory.domain.MethodDependencyProvider;
-import com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto.MethodCallDagFactory;
+import com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto.MethodCallTreeNodeFactory;
 import com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto.MethodDependencyDto;
 import io.vavr.control.Try;
 import okhttp3.Request;
@@ -15,11 +15,11 @@ import java.util.function.Function;
 public class MethodDependencyProviderImplement implements MethodDependencyProvider {
 
     private final DependencyApiClient apiClient;
-    private final MethodCallDagFactory factory;
+    private final MethodCallTreeNodeFactory factory;
 
     public MethodDependencyProviderImplement() {
         apiClient = DependencyApiClient.create();
-        factory = new MethodCallDagFactory();
+        factory = new MethodCallTreeNodeFactory();
     }
 
     @Override

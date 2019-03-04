@@ -39,9 +39,9 @@ public class MethodCallTreeNode extends LinkedMultiTreeNode<MethodVertex> {
                 collect(Collectors.toList());
     }
 
-    public void attachEdge(MethodCallDirectedEdge callDirectedEdge, MethodCallTreeNode node) {
+    public void attachEdge(MethodCallDirectedEdge callDirectedEdge) {
         this.callDirectedEdge.add(callDirectedEdge);
-        this.add(node);
+        this.add(new MethodCallTreeNode(callDirectedEdge.getToVertex()));
     }
 
     public Optional<MethodCallTreeNode> findByRelation(MethodCallDirectedEdge targetRelation) {
@@ -71,5 +71,21 @@ public class MethodCallTreeNode extends LinkedMultiTreeNode<MethodVertex> {
             MethodCallTreeNode subNode = (MethodCallTreeNode) subTree;
             return subNode.getLeftNodes();
         }).flatMap(Collection::stream).collect(Collectors.toList());
+    }
+
+    public int getDepth() {
+        if(this.isLeaf()) {
+            return 1;
+        }
+
+        final int childRenDeps = this.subtrees()
+                .stream()
+                .map(node -> (MethodCallTreeNode) node)
+                .mapToInt(MethodCallTreeNode::getDepth)
+                .sum();
+        if(this.isRoot()) {
+            return childRenDeps;
+        }
+        return childRenDeps + 1;
     }
 }

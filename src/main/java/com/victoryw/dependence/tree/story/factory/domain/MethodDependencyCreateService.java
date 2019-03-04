@@ -11,7 +11,9 @@ class MethodDependencyCreateService {
     }
 
     Optional<MethodCallTreeNode> execute(String className, String methodName) {
-        final Optional<MethodCallTreeNode> treeMaybe = methodDependencyProvider.getMethodDependencies(className, methodName);
+        final Optional<MethodCallTreeNode> treeMaybe =
+                methodDependencyProvider.getMethodDependencies(className, methodName);
+
         if(!treeMaybe.isPresent()) {
             throw new MethodCallTreeNotExistsException(className, methodName);
         }
@@ -26,7 +28,9 @@ class MethodDependencyCreateService {
 
         leafNodes.forEach(leaf -> {
             MethodVertex data = leaf.data();
-            final Optional<MethodCallTreeNode> appendTreeMaybe = methodDependencyProvider.getMethodDependencies(data.getClassName(), data.getMethodName());
+            final Optional<MethodCallTreeNode> appendTreeMaybe = methodDependencyProvider.
+                    getMethodDependencies(data.getClassName(), data.getMethodName());
+
             if(! appendTreeMaybe.isPresent()) {
                 return;
             }

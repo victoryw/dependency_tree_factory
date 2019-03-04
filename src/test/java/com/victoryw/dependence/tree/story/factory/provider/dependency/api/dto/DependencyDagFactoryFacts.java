@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 class DependencyDagFactoryFacts {
 
     private static MethodDependencyDto methodDependencyDto;
-    private MethodCallDagFactory factory;
+    private MethodCallTreeNodeFactory factory;
 
     @BeforeAll
     static void setup() {
@@ -19,7 +19,7 @@ class DependencyDagFactoryFacts {
 
     @BeforeEach
     void setUp() {
-        factory = new MethodCallDagFactory();
+        factory = new MethodCallTreeNodeFactory();
     }
 
 
