@@ -4,8 +4,8 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.google.gson.Gson;
+import com.victoryw.dependence.tree.story.factory.domain.MethodCallTreeNode;
 import com.victoryw.dependence.tree.story.factory.fixtures.MethodDependencyDtoFixture;
-import com.victoryw.dependence.tree.story.factory.domain.MethodDag;
 import com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto.MethodDependencyDto;
 import com.victoryw.dependence.tree.story.factory.util.AssertDtoToDomainMapperHelper;
 import org.assertj.core.api.Assertions;
@@ -41,22 +41,22 @@ class MethodDependencyProviderFacts {
 
 
     @Test
-    void should_fetch_method_dependency_to_model() {
+    void should_fetch_method_dependency_to_tree() {
 
-        final String className = "com.ebao.life.claim.infrastructure.expose.MedicardCaseTransPolicyDAO";
-        final String methodName = "batchcreate";
+        final String className = "className";
+        final String methodName = "methodName";
 
         final String methodUrl = String.format("/method/%s/%s/callees", className, methodName);
 
         wireMockServer.stubFor(WireMock.get(WireMock.urlEqualTo(methodUrl))
                 .willReturn(WireMock.aResponse().withBody(methodReturnJsonBody)));
 
-        final Optional<MethodDag> methodDepsResult = provider.getMethodDependencies(className, methodName);
+        final Optional<MethodCallTreeNode> methodDepsResult = provider.getMethodDependencies(className, methodName);
 
         Assertions.assertThat(methodDepsResult).isPresent();
-        final MethodDag methodDepsDag = methodDepsResult.get();
-        AssertDtoToDomainMapperHelper.assertGraphNodeTheSameAsSource(methodDepsDag, source.getMethodNodeDtos());
-        AssertDtoToDomainMapperHelper.assertGraphEdgeTheSameAsSource(methodDepsDag, source.getMethodCallDtos());
+        final MethodCallTreeNode tree = methodDepsResult.get();
+        AssertDtoToDomainMapperHelper.assertGraphNodeTheSameAsSource2(tree, source.getMethodNodeDtos());
+        AssertDtoToDomainMapperHelper.assertGraphEdgeTheSameAsSource2(tree, source.getMethodCallDtos());
     }
 
 }

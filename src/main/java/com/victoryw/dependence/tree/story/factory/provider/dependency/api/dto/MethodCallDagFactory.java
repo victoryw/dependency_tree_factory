@@ -12,26 +12,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class MethodCallDagFactory {
-    public MethodDag create(MethodDependencyDto methodDependencyDto) {
-        List<MethodVertex> vertexes = methodDependencyDto.getMethodNodeDtos()
-                .stream()
-                .map((dto) -> new MethodVertex(dto.getId(), dto.getTitle()))
-                .collect(Collectors.toList());
-
-        final MethodDag methodDag = new MethodDag(vertexes, vertexes.get(0));
-
-        methodDependencyDto.getMethodCallDtos().forEach((methodCallDto -> {
-            methodDag.addEdge(methodCallDto.getA(), methodCallDto.getB());
-        }));
-
-        return methodDag;
-    }
-
-
-    public MethodCallTreeNode create2(MethodDependencyDto methodDependencyDto) {
+    public MethodCallTreeNode create(MethodDependencyDto methodDependencyDto) {
         List<MethodVertex> vertexes = methodDependencyDto.getMethodNodeDtos()
                 .stream()
                 .map((dto) -> new MethodVertex(dto.getId(), dto.getTitle()))
@@ -45,6 +30,7 @@ public class MethodCallDagFactory {
 
         MethodCallTreeNode root = createRoot(vertexes, directedEdgeSet);
         fillRoot(root, directedEdgeSet);
+
         return root;
     }
 

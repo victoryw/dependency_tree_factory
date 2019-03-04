@@ -1,7 +1,6 @@
 package com.victoryw.dependence.tree.story.factory.provider.dependency.api;
 
 import com.victoryw.dependence.tree.story.factory.domain.MethodCallTreeNode;
-import com.victoryw.dependence.tree.story.factory.domain.MethodDag;
 import com.victoryw.dependence.tree.story.factory.domain.MethodDependencyProvider;
 import com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto.MethodCallDagFactory;
 import com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto.MethodDependencyDto;
@@ -24,22 +23,9 @@ public class MethodDependencyProviderImplement implements MethodDependencyProvid
     }
 
     @Override
-    public Optional<MethodCallTreeNode> getMethodDependencies2(String className, String methodName) {
+    public Optional<MethodCallTreeNode> getMethodDependencies(String className, String methodName) {
         final Response<MethodDependencyDto> response = queryForResponse(className, methodName);
         validResponse(response);
-        return Optional
-                .ofNullable(response.body())
-                .map(factory::create2);
-    }
-
-    @Override
-    public Optional<MethodDag> getMethodDependencies(String className, String methodName) {
-        final Response<MethodDependencyDto> response = queryForResponse(className, methodName);
-        validResponse(response);
-        return transformResponse(response);
-    }
-
-    private Optional<MethodDag> transformResponse(Response<MethodDependencyDto> response) {
         return Optional
                 .ofNullable(response.body())
                 .map(factory::create);

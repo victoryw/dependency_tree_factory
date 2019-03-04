@@ -1,7 +1,5 @@
 package com.victoryw.dependence.tree.story.factory.domain;
 
-import com.scalified.tree.multinode.LinkedMultiTreeNode;
-
 import java.util.Optional;
 
 class MethodDependencyCreateService {
@@ -16,7 +14,7 @@ class MethodDependencyCreateService {
     }
 
     public Optional<MethodCallTreeNode> execute(String className, String methodName) {
-        final Optional<MethodCallTreeNode> methodDependencies = methodDependencyProvider.getMethodDependencies2(className, methodName);
+        final Optional<MethodCallTreeNode> methodDependencies = methodDependencyProvider.getMethodDependencies(className, methodName);
         return methodDependencies;
     }
 }
