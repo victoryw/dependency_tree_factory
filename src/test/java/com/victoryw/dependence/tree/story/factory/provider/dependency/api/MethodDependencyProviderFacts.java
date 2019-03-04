@@ -3,11 +3,11 @@ package com.victoryw.dependence.tree.story.factory.provider.dependency.api;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import com.google.gson.Gson;
 import com.victoryw.dependence.tree.story.factory.domain.MethodCallTreeNode;
 import com.victoryw.dependence.tree.story.factory.fixtures.MethodDependencyDtoFixture;
 import com.victoryw.dependence.tree.story.factory.provider.dependency.api.dto.MethodDependencyDto;
 import com.victoryw.dependence.tree.story.factory.util.AssertDtoToDomainMapperHelper;
+import com.victoryw.dependence.tree.story.factory.util.GsonExtension;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,9 +29,7 @@ class MethodDependencyProviderFacts {
         wireMockServer.start();
 
         source = MethodDependencyDtoFixture.root();
-
-        Gson gson = new Gson();
-        methodReturnJsonBody = gson.toJson(source);
+        this.methodReturnJsonBody = GsonExtension.toJson(MethodDependencyProviderFacts.source);
     }
 
     @AfterEach

@@ -3,11 +3,15 @@ package com.victoryw.dependence.tree.story.factory.domain;
 import com.scalified.tree.TreeNode;
 import com.scalified.tree.multinode.LinkedMultiTreeNode;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class MethodCallTreeNode extends LinkedMultiTreeNode<MethodVertex> {
     private final Set<MethodCallDirectedEdge> callDirectedEdge;
@@ -56,5 +60,16 @@ public class MethodCallTreeNode extends LinkedMultiTreeNode<MethodVertex> {
                 }).
                 filter(Optional::isPresent).
                 map(Optional::get).findFirst();
+    }
+
+    public List<MethodCallTreeNode> getLeftNodes() {
+        if(this.isLeaf()) {
+            return Collections.singletonList(this);
+        }
+
+        return this.subtrees().stream().map(subTree -> {
+            MethodCallTreeNode subNode = (MethodCallTreeNode) subTree;
+            return subNode.getLeftNodes();
+        }).flatMap(Collection::stream).collect(Collectors.toList());
     }
 }

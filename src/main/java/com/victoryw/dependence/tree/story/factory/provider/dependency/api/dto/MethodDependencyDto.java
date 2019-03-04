@@ -19,6 +19,10 @@ public class MethodDependencyDto implements Serializable
     private List<MethodCallDto> methodCallDtos = new ArrayList<MethodCallDto>();
     private final static long serialVersionUID = -4832634467726450742L;
 
+    public int getRelationCount() {
+        return getMethodCallDtos().size();
+    }
+
     public List<MethodNodeDto> getMethodNodeDtos() {
         return methodNodeDtos;
     }
