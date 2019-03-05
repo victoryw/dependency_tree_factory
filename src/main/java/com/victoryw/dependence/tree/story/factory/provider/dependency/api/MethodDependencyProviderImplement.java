@@ -25,6 +25,11 @@ public class MethodDependencyProviderImplement implements MethodDependencyProvid
     @Override
     public Optional<MethodCallTreeNode> getMethodDependencies(String className, String methodName) {
         final Response<MethodDependencyDto> response = queryForResponse(className, methodName);
+        //temp
+        if(response == null) {
+            return Optional.empty();
+        }
+
         validResponse(response);
         return transform(response);
     }
@@ -57,7 +62,7 @@ public class MethodDependencyProviderImplement implements MethodDependencyProvid
             );
         };
 
-        return Try.of(apiCall::execute).getOrElseThrow(createException);
+        return Try.of(apiCall::execute).get();
     }
 
 

@@ -8,16 +8,16 @@ import java.util.List;
 import java.util.Queue;
 import java.util.stream.Collectors;
 
-class MethodDependencySplitService {
+public class MethodDependencySplitService {
 
     private final int maxDepthLimit;
 
-    MethodDependencySplitService(int maxDepthLimit) {
+    public MethodDependencySplitService(int maxDepthLimit) {
 
         this.maxDepthLimit = maxDepthLimit;
     }
 
-    Queue<MethodCallTreeNodeGroup> execute(MethodCallTreeNode tree) {
+    public Queue<MethodCallTreeNodeGroup> execute(MethodCallTreeNode tree) {
         Queue<MethodCallTreeNodeGroup> methodCallTreeNodes = new LinkedList<>();
 
         splitNode(tree, methodCallTreeNodes);
@@ -56,8 +56,9 @@ class MethodDependencySplitService {
         }
 
         //按照广度分组，直到省下的节点+1 <= limit
-        final LinkedList<MethodCallTreeNode> breadthLeaves = node.getLeftNodes()
+        final LinkedList<MethodCallTreeNode> breadthLeaves = node.subtrees()
                 .stream()
+                .map((treeNode) -> (MethodCallTreeNode)treeNode)
                 .sorted(Comparator.comparingInt(MethodCallTreeNode::getDepth))
                 .collect(Collectors.toCollection(LinkedList::new));
 

@@ -19,8 +19,8 @@ public interface DependencyApiClient {
             @Path("method") String methodName);
 
     static DependencyApiClient create() {
-        final String baseUrl = "http://localhost:8900";
-
+//        final String baseUrl = "http://localhost:8900";
+        final String baseUrl = "http://10.127.151.14:8900/";
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new LoggingInterceptor())
                 .build();

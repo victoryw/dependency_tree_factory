@@ -2,15 +2,15 @@ package com.victoryw.dependence.tree.story.factory.domain;
 import java.util.List;
 import java.util.Optional;
 
-class MethodDependencyCreateService {
+public class MethodDependencyCreateService {
     private final MethodDependencyProvider methodDependencyProvider;
 
-    MethodDependencyCreateService(MethodDependencyProvider methodDependencyProvider) {
+    public MethodDependencyCreateService(MethodDependencyProvider methodDependencyProvider) {
 
         this.methodDependencyProvider = methodDependencyProvider;
     }
 
-    Optional<MethodCallTreeNode> execute(String className, String methodName) {
+    public Optional<MethodCallTreeNode> execute(String className, String methodName) {
         final Optional<MethodCallTreeNode> treeMaybe =
                 methodDependencyProvider.getMethodDependencies(className, methodName);
 

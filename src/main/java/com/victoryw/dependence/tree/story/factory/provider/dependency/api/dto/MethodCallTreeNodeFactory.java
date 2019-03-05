@@ -4,7 +4,9 @@ import com.victoryw.dependence.tree.story.factory.domain.MethodCallDirectedEdge;
 import com.victoryw.dependence.tree.story.factory.domain.MethodCallTreeNode;
 import com.victoryw.dependence.tree.story.factory.domain.MethodVertex;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -30,10 +32,35 @@ public class MethodCallTreeNodeFactory {
                 collect(Collectors.toSet());
 
 
+//        reduceCycle(directedEdgeSet);
         MethodCallTreeNode root = createRoot(vertexes, directedEdgeSet);
         fillRoot(root, directedEdgeSet);
 
         return root;
+    }
+
+    private void reduceCycle(Set<MethodCallDirectedEdge> directedEdgeSet){
+
+        Set<Pair<MethodCallDirectedEdge, MethodCallDirectedEdge>> duplicatePairs = new HashSet<>();
+        directedEdgeSet.forEach(edge -> {
+            final Optional<MethodCallDirectedEdge> duplicate = directedEdgeSet.stream().filter(mark -> mark.getToVertex()
+                    .getNodeId()
+                    .equals(edge.getFromVertex().getNodeId())).findAny();
+            if(duplicate.isPresent()) {
+                Pair<MethodCallDirectedEdge, MethodCallDirectedEdge> pair = new ImmutablePair<>(edge, duplicate.get());
+                duplicatePairs.add(pair);
+            }
+        });
+
+        duplicatePairs.forEach(duplicationPair -> {
+            final boolean hasOtherCalled = directedEdgeSet.stream().anyMatch(edge ->
+                    duplicationPair.getLeft().getToVertex() == edge.getToVertex());
+            if(hasOtherCalled) {
+                directedEdgeSet.remove(duplicationPair.getRight());
+            } else {
+                directedEdgeSet.remove(duplicationPair.getLeft());
+            }
+        });
     }
 
     private void fillRoot(MethodCallTreeNode root, Set<MethodCallDirectedEdge> directedEdgeSet) {

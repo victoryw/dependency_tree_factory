@@ -3,13 +3,20 @@
  */
 package com.victoryw.dependence.tree.story.factory;
 
+import com.victoryw.dependence.tree.story.factory.domain.MethodCallTreeNodeGroup;
 import org.junit.jupiter.api.Test;
+
+import java.util.Queue;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class AppTest {
     @Test
     void testAppHasAGreeting() {
-        App classUnderTest = new App();
-        assertNotNull("app should have a greeting", classUnderTest.getGreeting());
+//        App classUnderTest = new App();
+//        assertNotNull("app should have a greeting", classUnderTest.getGreeting());
+        Application application = new Application();
+        final Queue<MethodCallTreeNodeGroup> startTrans = application.split("com.ebao.life.esb.listener.ecommerce.NewbizUWBean",
+                "savePolicyInfo");
     }
 }
