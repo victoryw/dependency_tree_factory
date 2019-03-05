@@ -73,7 +73,7 @@ public class MethodCallTreeNode extends LinkedMultiTreeNode<MethodVertex> {
         }).flatMap(Collection::stream).collect(Collectors.toList());
     }
 
-    public int getDepth() {
+    public int getDepth() throws StackOverflowError {
         if(this.isLeaf()) {
             return 1;
         }

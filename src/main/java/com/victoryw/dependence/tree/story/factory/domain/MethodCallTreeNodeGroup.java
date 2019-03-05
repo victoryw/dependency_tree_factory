@@ -9,7 +9,11 @@ import java.util.List;
 public class MethodCallTreeNodeGroup {
     private List<MethodCallTreeNode> nodes = new ArrayList<>();
 
-    public MethodCallTreeNodeGroup(MethodCallTreeNode... methodVertexTreeNodes) {
+    public MethodCallTreeNodeGroup() {
+
+    }
+
+    public void attach(MethodCallTreeNode... methodVertexTreeNodes) {
         nodes.addAll(Arrays.asList(methodVertexTreeNodes));
     }
 
