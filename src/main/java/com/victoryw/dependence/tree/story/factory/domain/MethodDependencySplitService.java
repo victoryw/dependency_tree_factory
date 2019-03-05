@@ -1,5 +1,7 @@
 package com.victoryw.dependence.tree.story.factory.domain;
 
+import com.scalified.tree.TreeNode;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -20,20 +22,21 @@ public class MethodDependencySplitService {
     public Queue<MethodCallTreeNodeGroup> execute(MethodCallTreeNode tree) {
         Queue<MethodCallTreeNodeGroup> methodCallTreeNodes = new LinkedList<>();
 
-        splitNode(tree, methodCallTreeNodes);
+        splitRoot(tree, methodCallTreeNodes);
 
         return methodCallTreeNodes;
     }
 
-    private void splitNode(MethodCallTreeNode node, Queue<MethodCallTreeNodeGroup> methodCallTreeNodes) {
+    private void splitRoot(MethodCallTreeNode node, Queue<MethodCallTreeNodeGroup> methodCallTreeNodes) {
         final int depth = node.getDepth();
         if (depth <= maxDepthLimit) {
-            final MethodCallTreeNodeGroup rootGroup = new MethodCallTreeNodeGroup();
+            //use the root as target
+            final MethodCallTreeNodeGroup rootGroup = new MethodCallTreeNodeGroup(node);
             rootGroup.attach(node);
             methodCallTreeNodes.add(rootGroup);
         } else {
             reduceNodeDeps(node, methodCallTreeNodes);
-            splitNode(node, methodCallTreeNodes);
+            splitRoot(node, methodCallTreeNodes);
 
         }
     }
@@ -92,7 +95,9 @@ public class MethodDependencySplitService {
 
     private void attachGroup(Queue<MethodCallTreeNodeGroup> methodCallTreeNodes, MethodCallTreeNode... nodes) {
         final List<MethodCallTreeNode> toDeals = Arrays.asList(nodes);
-        final MethodCallTreeNodeGroup groupSelf = new MethodCallTreeNodeGroup();
+        //all the nodes same as parent
+        final MethodCallTreeNode parent = (MethodCallTreeNode)toDeals.get(0).parent();
+        final MethodCallTreeNodeGroup groupSelf = new MethodCallTreeNodeGroup(parent);
         toDeals.forEach(node -> {
             if (node.parent() != null) {
                 node.parent().remove(node);

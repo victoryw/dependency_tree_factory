@@ -1,16 +1,15 @@
 package com.victoryw.dependence.tree.story.factory.domain;
 
-import com.scalified.tree.TreeNode;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class MethodCallTreeNodeGroup {
+    private final MethodCallTreeNode splitFrom;
     private List<MethodCallTreeNode> nodes = new ArrayList<>();
 
-    public MethodCallTreeNodeGroup() {
-
+    public MethodCallTreeNodeGroup(MethodCallTreeNode splitFrom) {
+        this.splitFrom = splitFrom;
     }
 
     public void attach(MethodCallTreeNode... methodVertexTreeNodes) {
@@ -19,5 +18,9 @@ public class MethodCallTreeNodeGroup {
 
     public List<MethodCallTreeNode> getNodes() {
         return nodes;
+    }
+
+    public MethodCallTreeNode getSplitFrom() {
+        return splitFrom;
     }
 }
